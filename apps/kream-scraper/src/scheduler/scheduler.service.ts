@@ -1,4 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { ScraperService } from 'src/scraper/scraper.service';
 
 @Injectable()
-export class SchedulerService {}
+export class SchedulerService implements OnModuleInit {
+  constructor(private scraper: ScraperService) {}
+  onModuleInit() {
+    this.handleScrapCron();
+  }
+  @Cron(CronExpression.EVERY_30_MINUTES)
+  handleScrapCron() {
+    const now = Date.now();
+    this.scraper.scrap('m_shoes', 'https://kream.co.kr/exhibitions/2487', now);
+  }
+}
