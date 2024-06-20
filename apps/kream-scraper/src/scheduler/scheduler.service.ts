@@ -9,8 +9,12 @@ export class SchedulerService implements OnModuleInit {
     this.handleScrapCron();
   }
   @Cron(CronExpression.EVERY_30_MINUTES)
-  handleScrapCron() {
+  async handleScrapCron() {
     const now = Date.now();
-    this.scraper.scrap('m_shoes', 'https://kream.co.kr/exhibitions/2487', now);
+    await this.scraper.scrap(
+      'm_shoes',
+      'https://kream.co.kr/exhibitions/2487',
+      now,
+    );
   }
 }
