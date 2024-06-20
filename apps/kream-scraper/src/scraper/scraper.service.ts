@@ -8,6 +8,8 @@ export class ScraperService {
   private readonly logger = new Logger(ScraperService.name);
   private readonly pageRenderingTimeout = 60000;
   private readonly maxRetry = 10;
+  private readonly userAgent =
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
   async scrap(category: string, url: string, time: number) {
     return this.scrapProducts(category, url, time);
@@ -17,9 +19,7 @@ export class ScraperService {
     this.logger.verbose(`[ ${category} ] Scraping in progress.`);
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.setUserAgent(
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-    );
+    await page.setUserAgent(this.userAgent);
 
     try {
       await page.goto(url, {
