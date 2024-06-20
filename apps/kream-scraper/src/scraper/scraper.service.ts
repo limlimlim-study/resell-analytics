@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
+import { extractNumbers } from 'src/utils/utils';
 
 @Injectable()
 export class ScraperService {
@@ -37,12 +38,6 @@ export class ScraperService {
       if (!$items.length) {
         throw new Error(`[${category}] No content found.`);
       }
-
-      const extractNumbers = (input) => {
-        if (!input) return 0;
-        const numbers = input.match(/\d+/g);
-        return numbers ? parseFloat(numbers.join('')) : 0;
-      };
 
       const result = Array.from($items).map((item) => {
         const $item = $(item);
