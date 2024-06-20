@@ -16,7 +16,11 @@ export class ScraperService {
 
   private async scrapProducts(url, parser: ProductParser, retry = 0) {
     this.logger.verbose(`[ ${parser.category} ] Scraping in progress.`);
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+
     const page = await browser.newPage();
     await page.setUserAgent(this.userAgent);
 
