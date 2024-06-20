@@ -2,6 +2,7 @@ import { Page } from 'puppeteer';
 import PageEvaluator from './page_evaluator';
 import * as cheerio from 'cheerio';
 import { extractNumbers } from 'src/utils/utils';
+import { Product } from 'src/types';
 
 class ProductParser {
   get category() {
@@ -18,7 +19,7 @@ class ProductParser {
     private _time: number,
   ) {}
 
-  async parse(page: Page) {
+  async parse(page: Page): Promise<Product[]> {
     const contents = await this.evaluator.eval(page);
     const $ = cheerio.load(contents);
     const $items = $('.exhibition_product');
@@ -27,7 +28,7 @@ class ProductParser {
       throw new Error(`[ ${this._category} ] No content found.`);
     }
 
-    const result = Array.from($items).map((item) => {
+    const result: Product[] = Array.from($items).map((item) => {
       const $item = $(item);
       const href = $item.find('a').first().attr('href');
       const productId = href.split('/').pop();

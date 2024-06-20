@@ -37,7 +37,6 @@ export class ScraperService {
       } else {
         this.logger.error(e);
         this.logger.verbose(`[ ${parser.category} ] Scraping fail.`);
-        return { error: e.toString() };
       }
     } finally {
       await browser.close();

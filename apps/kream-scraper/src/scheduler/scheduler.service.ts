@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import PageEvaluator from 'src/scraper/classes/page_evaluator';
 import ProductParser from 'src/scraper/classes/product_Parser';
 import { ScraperService } from 'src/scraper/scraper.service';
+import { Category, CategoryCode } from 'src/types';
 
 @Injectable()
 export class SchedulerService implements OnModuleInit {
@@ -15,8 +16,8 @@ export class SchedulerService implements OnModuleInit {
     const now = Date.now();
 
     await this.scraper.scrap(
-      'https://kream.co.kr/exhibitions/2487',
-      new ProductParser(new PageEvaluator(), 'm_shoes', now),
+      `https://kream.co.kr/exhibitions/${CategoryCode.MAN_SHOES}`,
+      new ProductParser(new PageEvaluator(), Category.MAN_SHOES, now),
     );
   }
 }
