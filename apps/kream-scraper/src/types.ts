@@ -9,7 +9,7 @@ export enum Category {
   HOT_STYLE = 'hot_style',
   ACCESSORIES = 'accessories',
   BAGS = 'bags',
-  RIDING_SALES = 'rising_sales',
+  RISING_SALES = 'rising_sales',
 }
 
 export enum CategoryCode {

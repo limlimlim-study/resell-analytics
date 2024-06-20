@@ -1,7 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import PageEvaluator from 'src/scraper/classes/page_evaluator';
-import ProductParser from 'src/scraper/classes/product_Parser';
+import LazyPageEvaluator from 'src/scraper/classes/evaluator/lazy_page_evaluator';
+import PageEvaluator from 'src/scraper/classes/evaluator/page_evaluator';
+import ProductParser from 'src/scraper/classes/parser/product_parser';
+import RisingSaleProductParser from 'src/scraper/classes/parser/rising_sale_product_parser';
 import { ScraperService } from 'src/scraper/scraper.service';
 import { Category, CategoryCode } from 'src/types';
 
@@ -71,6 +73,14 @@ export class SchedulerService implements OnModuleInit {
       new ProductParser(new PageEvaluator(), Category.WOMEN_SANDALS, now),
     );
 
+    await this.scraper.scrap(
+      'https://kream.co.kr/?tab=home_ranking',
+      new RisingSaleProductParser(
+        new LazyPageEvaluator(),
+        Category.RISING_SALES,
+        now,
+      ),
+    );
     console.timeEnd('Complete all scrapes');
   }
 }
