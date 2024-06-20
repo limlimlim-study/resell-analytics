@@ -15,7 +15,7 @@ export class SchedulerService implements OnModuleInit {
     private store: StoreService,
   ) {}
   onModuleInit() {
-    this.handleScrapCron();
+    // this.handleScrapCron();
   }
   @Cron(CronExpression.EVERY_30_MINUTES)
   async handleScrapCron() {

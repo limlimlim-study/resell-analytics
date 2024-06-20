@@ -6,6 +6,6 @@ import { Product } from 'src/types';
 export class StoreService {
   constructor(private prisma: PrismaService) {}
   async insert(products: Product[]) {
-    await this.prisma.product.createMany({ data: products });
+    await this.prisma.kreamProduct.createMany({ data: products });
   }
 }

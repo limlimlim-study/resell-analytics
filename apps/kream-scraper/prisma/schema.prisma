@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
+model KreamProduct {
   id             Int     @id @default(autoincrement())
   category       String
   productId      String
@@ -29,4 +29,6 @@ model Product {
   url            String
   isBrand        Boolean
   time           BigInt
+
+  @@index([time], name: "time_idx")
 }
