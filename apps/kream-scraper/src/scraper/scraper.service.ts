@@ -17,7 +17,7 @@ export class ScraperService {
 
   private async scrapProducts(category, url, time, retry = 0) {
     this.logger.verbose(`[ ${category} ] Scraping in progress.`);
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.setUserAgent(this.userAgent);
 
@@ -26,8 +26,6 @@ export class ScraperService {
         waitUntil: 'networkidle0',
         timeout: this.pageRenderingTimeout,
       });
-
-      await page.waitForSelector('.exhibition_product');
 
       const contents = await page.evaluate(
         () => document.querySelector('#__layout').innerHTML,
@@ -76,9 +74,15 @@ export class ScraperService {
       this.logger.verbose(`[ ${category} ] Scraping complete.`);
       return result;
     } catch (e) {
-      this.logger.error(e);
-      this.logger.verbose(`[ ${category} ] Retry ${retry}.`);
-      return;
+      const incrementRetry = retry + 1;
+      if (incrementRetry < this.maxRetry) {
+        this.logger.verbose(`[ ${category} ] Retry ${incrementRetry}.`);
+        return this.scrapProducts(category, url, time, incrementRetry);
+      } else {
+        this.logger.error(e);
+        this.logger.verbose(`[ ${category} ] Scraping fail.`);
+        return { error: e.toString() };
+      }
     } finally {
       await browser.close();
     }
