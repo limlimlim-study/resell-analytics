@@ -1,7 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import ProductParser from './classes/parser/product_parser';
 
+puppeteer.use(StealthPlugin());
 @Injectable()
 export class ScraperService {
   private readonly logger = new Logger(ScraperService.name);
@@ -20,7 +22,7 @@ export class ScraperService {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-
+    browser.userAgent();
     const page = await browser.newPage();
     await page.setUserAgent(this.userAgent);
 
