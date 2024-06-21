@@ -24,7 +24,7 @@ export class SchedulerService implements OnModuleInit {
 
     await this.scraper.scrap(
       // `https://kream.co.kr/exhibitions/${CategoryCode.MAN_SHOES}`,
-      `http://www.naver.com`,
+      `https://www.kream.co.kr`,
       new ProductParser(new PageEvaluator(), Category.MAN_SHOES, now),
     ),
       // await this.store.insert(
