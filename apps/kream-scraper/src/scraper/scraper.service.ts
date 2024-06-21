@@ -46,7 +46,6 @@ export class ScraperService {
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
-      await page.click('a');
 
       const contents = await page.evaluate(() => document.body.innerHTML);
       this.logger.debug(contents);
