@@ -22,10 +22,10 @@ export class ScraperService {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    this.logger.debug(browser.userAgent());
+    this.logger.debug(await browser.userAgent());
     const page = await browser.newPage();
     await page.setUserAgent(this.userAgent);
-    this.logger.debug(browser.userAgent());
+    this.logger.debug(await browser.userAgent());
     try {
       this.logger.verbose(url);
       await page.goto(url, {
