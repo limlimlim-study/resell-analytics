@@ -22,7 +22,7 @@ export class ScraperService {
   private async scrapProducts(url, parser: ProductParser, retry = 0) {
     this.logger.verbose(`[ ${parser.category} ] Scraping in progress.`);
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
