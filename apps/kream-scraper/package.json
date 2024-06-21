@@ -12,6 +12,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "xvfb": "xvfb-run ndoe dist/main.js",
     "pm2:start": "pm2 start dist/main.js --name kream-scraper",
     "pm2:stop": "pm2 stop kream-scraper",
     "db:migration": "npx prisma migrate dev",
