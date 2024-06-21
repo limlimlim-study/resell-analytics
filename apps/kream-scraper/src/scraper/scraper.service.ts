@@ -32,7 +32,7 @@ export class ScraperService {
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
-      const userAgent = await page.evaluate(() => 'hello');
+      const userAgent = await page.evaluate(() => navigator.userAgent);
       this.logger.debug(userAgent);
       // const result = await parser.parse(page);
       this.logger.verbose(`[ ${parser.category} ] Scraping complete.`);
