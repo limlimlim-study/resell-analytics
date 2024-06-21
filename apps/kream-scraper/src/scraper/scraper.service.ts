@@ -41,6 +41,12 @@ export class ScraperService {
       this.logger.debug(url);
       const page = await browser.newPage();
       await page.setUserAgent(this.userAgent);
+      await page.setExtraHTTPHeaders({
+        'accept-language': 'en-US,en;q=0.9',
+        'accept-encoding': 'gzip, deflate, br',
+        accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+      });
       await page.goto(url, {
         // waitUntil: 'networkidle0',
         // referrerPolicy: ''
@@ -48,10 +54,8 @@ export class ScraperService {
         timeout: this.pageRenderingTimeout,
       });
 
-      const result = await fetch(url);
-      this.logger.log(result);
-      // const contents = await page.evaluate(() => document.body.innerHTML);
-      // this.logger.debug(contents);
+      const contents = await page.evaluate(() => document.body.innerHTML);
+      this.logger.debug(contents);
       // const result = await parser.parse(page);
       this.logger.verbose(`[ ${parser.category} ] Scraping complete.`);
       // return result;
