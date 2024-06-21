@@ -5,7 +5,7 @@ export enum Category {
   WOMEN_SHOES = 'w_shoes',
   WOMEN_CLOTHES = 'w_clothes',
   WOMEN_SANDALS = 'w_sandals',
-  WISHS = 'wishis',
+  WISHS = 'wishs',
   HOT_STYLE = 'hot_style',
   ACCESSORIES = 'accessories',
   BAGS = 'bags',
