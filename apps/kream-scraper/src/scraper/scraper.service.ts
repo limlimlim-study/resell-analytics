@@ -22,7 +22,7 @@ export class ScraperService {
   private async scrapProducts(url, parser: ProductParser, retry = 0) {
     this.logger.verbose(`[ ${parser.category} ] Scraping in progress.`);
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -83,15 +83,6 @@ export class ScraperService {
         // referrerPolicy: ''
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
-      });
-
-      page.on('request', (req) => {
-        // 네트워크 요청을 인터셉트하고 헤더를 추가합니다.
-        const headers = req.headers();
-        headers['user-agent'] =
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
-        console.log(headers);
-        req.continue({ headers });
       });
 
       const contents = await page.evaluate(() => document.body.innerHTML);
