@@ -26,9 +26,16 @@ export class ScraperService {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-web-security',
-        '--disable-features=IsolateOrigins,site-per-process',
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-software-rasterizer',
       ],
+      // args: [
+      //   '--no-sandbox',
+      //   '--disable-setuid-sandbox',
+      //   '--disable-web-security',
+      //   '--disable-features=IsolateOrigins,site-per-process',
+      // ],
     });
     try {
       this.logger.debug(url);
