@@ -36,7 +36,7 @@ export class ScraperService {
       this.logger.verbose(`[ ${parser.category} ] Scraping complete.`);
       return result;
     } catch (e) {
-      this.logger.error(`ERROR [ ${parser.category} ] : ${e.toString()}`);
+      this.logger.error(`[ ${parser.category} ] : ${e.toString()}`);
       const incrementRetry = retry + 1;
       if (incrementRetry < this.maxRetry) {
         this.logger.verbose(`[ ${parser.category} ] Retry ${incrementRetry}.`);
