@@ -23,8 +23,7 @@ export class SchedulerService implements OnModuleInit {
     const now = Date.now();
 
     await this.scraper.scrap(
-      // `https://kream.co.kr/exhibitions/${CategoryCode.MAN_SHOES}`,
-      `https://www.musinsa.com/main/116?utm_source=google_shopping&utm_medium=sh&utm_campaign=pmax_ongoing&source=GOSHSAP001&utm_source=google_shopping&utm_medium=sh&utm_campaign=pmax_ongoing&source=GOSHSAP001&gad_source=1&gclid=CjwKCAjwps-zBhAiEiwALwsVYV-UbPXHUQYgkWddmyvXbeJfEybkpaso9YJOLY12kGoH2duAPp32thoCHmYQAvD_BwE`,
+      `https://kream.co.kr/products/156165`,
       new ProductParser(new PageEvaluator(), Category.MAN_SHOES, now),
     ),
       // await this.store.insert(
