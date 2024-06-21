@@ -29,6 +29,8 @@ export class ScraperService {
         '--disable-gpu',
         '--disable-dev-shm-usage',
         '--disable-software-rasterizer',
+        '--disable-features=site-per-process',
+        '--window-size=1280x1024',
       ],
       // args: [
       //   '--no-sandbox',
@@ -52,17 +54,44 @@ export class ScraperService {
         accept:
           'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
       });
+
+      await page.evaluateOnNewDocument(() => {
+        Object.defineProperty(navigator, 'webdriver', { get: () => false });
+        window['chrome'] = { runtime: {} };
+        Object.defineProperty(navigator, 'languages', {
+          get: () => ['en-US', 'en'],
+        });
+        Object.defineProperty(navigator, 'plugins', {
+          get: () => [1, 2, 3, 4, 5],
+        });
+      });
+
+      await page.setRequestInterception(true);
+      page.on('request', (request) => {
+        const headers = request.headers();
+        headers['user-agent'] =
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+        headers['accept-language'] = 'en-US,en;q=0.9';
+        headers['accept-encoding'] = 'gzip, deflate, br';
+        headers['accept'] =
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+        request.continue({ headers });
+      });
+
       await page.goto(url, {
         // waitUntil: 'networkidle0',
         // referrerPolicy: ''
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
-      await page.setExtraHTTPHeaders({
-        'accept-language': 'en-US,en;q=0.9',
-        'accept-encoding': 'gzip, deflate, br',
-        accept:
-          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+
+      page.on('request', (req) => {
+        // 네트워크 요청을 인터셉트하고 헤더를 추가합니다.
+        const headers = req.headers();
+        headers['user-agent'] =
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+        console.log(headers);
+        req.continue({ headers });
       });
 
       const contents = await page.evaluate(() => document.body.innerHTML);
