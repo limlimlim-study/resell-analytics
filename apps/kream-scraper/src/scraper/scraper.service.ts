@@ -43,6 +43,8 @@ export class ScraperService {
       await page.setUserAgent(this.userAgent);
       await page.goto(url, {
         // waitUntil: 'networkidle0',
+        referer: 'https://www.naver.com',
+        // referrerPolicy: ''
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
