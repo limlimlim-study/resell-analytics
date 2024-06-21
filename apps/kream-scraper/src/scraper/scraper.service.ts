@@ -43,14 +43,15 @@ export class ScraperService {
       await page.setUserAgent(this.userAgent);
       await page.goto(url, {
         // waitUntil: 'networkidle0',
-        referer: 'https://www.naver.com',
         // referrerPolicy: ''
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
 
-      const contents = await page.evaluate(() => document.body.innerHTML);
-      this.logger.debug(contents);
+      const result = await fetch(url);
+      this.logger.log(result);
+      // const contents = await page.evaluate(() => document.body.innerHTML);
+      // this.logger.debug(contents);
       // const result = await parser.parse(page);
       this.logger.verbose(`[ ${parser.category} ] Scraping complete.`);
       // return result;
