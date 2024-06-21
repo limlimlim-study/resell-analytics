@@ -17,10 +17,9 @@ export class ScraperService {
   private async scrapProducts(url, parser: ProductParser, retry = 0) {
     this.logger.verbose(`[ ${parser.category} ] Scraping in progress.`);
     const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-    await page.setUserAgent(this.userAgent);
-
     try {
+      const page = await browser.newPage();
+      await page.setUserAgent(this.userAgent);
       await page.goto(url, {
         waitUntil: 'networkidle0',
         timeout: this.pageRenderingTimeout,
@@ -31,11 +30,11 @@ export class ScraperService {
       return result;
     } catch (e) {
       const incrementRetry = retry + 1;
+      this.logger.error(`[ ${parser.category} ] ${e.toString()}`);
       if (incrementRetry < this.maxRetry) {
         this.logger.verbose(`[ ${parser.category} ] Retry ${incrementRetry}.`);
         return this.scrapProducts(url, parser, incrementRetry);
       } else {
-        this.logger.error(e);
         this.logger.verbose(`[ ${parser.category} ] Scraping fail.`);
       }
     } finally {
