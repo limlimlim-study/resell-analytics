@@ -28,11 +28,12 @@ export class ScraperService {
       const page = await browser.newPage();
       await page.setUserAgent(this.userAgent);
       await page.goto(url, {
-        waitUntil: 'networkidle0',
+        // waitUntil: 'networkidle0',
+        waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
-      const userAgent = await page.evaluate(() => 'hello');
-      this.logger.debug(userAgent);
+      // const userAgent = await page.evaluate(() => 'hello');
+      // this.logger.debug(userAgent);
       // const result = await parser.parse(page);
       this.logger.verbose(`[ ${parser.category} ] Scraping complete.`);
       // return result;
