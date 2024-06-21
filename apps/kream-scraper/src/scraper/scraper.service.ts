@@ -41,6 +41,11 @@ export class ScraperService {
       this.logger.debug(url);
       const page = await browser.newPage();
       await page.setUserAgent(this.userAgent);
+      await page.evaluateOnNewDocument(() => {
+        Object.defineProperty(navigator, 'webdriver', {
+          get: () => false,
+        });
+      });
       await page.setExtraHTTPHeaders({
         'accept-language': 'en-US,en;q=0.9',
         'accept-encoding': 'gzip, deflate, br',
@@ -52,6 +57,12 @@ export class ScraperService {
         // referrerPolicy: ''
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
+      });
+      await page.setExtraHTTPHeaders({
+        'accept-language': 'en-US,en;q=0.9',
+        'accept-encoding': 'gzip, deflate, br',
+        accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
       });
 
       const contents = await page.evaluate(() => document.body.innerHTML);
