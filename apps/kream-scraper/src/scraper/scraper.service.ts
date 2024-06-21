@@ -27,6 +27,7 @@ export class ScraperService {
     await page.setUserAgent(this.userAgent);
 
     try {
+      this.logger.debug(url);
       await page.goto(url, {
         waitUntil: 'networkidle0',
         timeout: this.pageRenderingTimeout,
