@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron, CronExpression, Timeout } from '@nestjs/schedule';
 import LazyPageEvaluator from 'src/scraper/classes/evaluator/lazy_page_evaluator';
 import PageEvaluator from 'src/scraper/classes/evaluator/page_evaluator';
 import ProductParser from 'src/scraper/classes/parser/product_parser';
@@ -18,6 +18,7 @@ export class SchedulerService implements OnModuleInit {
     this.handleScrapCron();
   }
   @Cron(CronExpression.EVERY_30_MINUTES)
+  @Timeout(10000)
   async handleScrapCron() {
     console.time('Complete all scrapes');
     const now = Date.now();
