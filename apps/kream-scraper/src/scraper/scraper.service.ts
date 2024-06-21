@@ -25,15 +25,14 @@ export class ScraperService {
 
     const page = await browser.newPage();
     await page.setUserAgent(this.userAgent);
-    const userAgent = await page.evaluate(() => navigator.userAgent);
-    this.logger.debug(userAgent);
     try {
       this.logger.verbose(url);
       await page.goto(url, {
         waitUntil: 'networkidle0',
         timeout: this.pageRenderingTimeout,
       });
-
+      const userAgent = await page.evaluate(() => navigator.userAgent);
+      this.logger.debug(userAgent);
       const result = await parser.parse(page);
       this.logger.verbose(`[ ${parser.category} ] Scraping complete.`);
       return result;
