@@ -23,7 +23,12 @@ export class ScraperService {
     this.logger.verbose(`[ ${parser.category} ] Scraping in progress.`);
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-web-security',
+        '--disable-features=IsolateOrigins,site-per-process',
+      ],
     });
 
     try {
