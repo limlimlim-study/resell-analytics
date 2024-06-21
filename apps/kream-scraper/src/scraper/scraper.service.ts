@@ -24,7 +24,7 @@ export class ScraperService {
     });
 
     try {
-      this.logger.verbose(url);
+      this.logger.debug(url);
       const page = await browser.newPage();
       await page.setUserAgent(this.userAgent);
       await page.goto(url, {

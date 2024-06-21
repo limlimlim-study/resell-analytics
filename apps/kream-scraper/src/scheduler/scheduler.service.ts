@@ -18,7 +18,6 @@ export class SchedulerService implements OnModuleInit {
     this.handleScrapCron();
   }
   @Cron(CronExpression.EVERY_30_MINUTES)
-  @Timeout(10000)
   async handleScrapCron() {
     console.time('Complete all scrapes');
     const now = Date.now();
