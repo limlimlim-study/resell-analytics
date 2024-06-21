@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import puppeteer from 'puppeteer-extra';
+import * as cheerio from 'cheerio';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import ProductParser from './classes/parser/product_parser';
 
@@ -32,6 +33,8 @@ export class ScraperService {
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
+      await page.click('a.button');
+
       const contents = await page.evaluate(() => document.body.innerHTML);
       this.logger.debug(contents);
       // const result = await parser.parse(page);
