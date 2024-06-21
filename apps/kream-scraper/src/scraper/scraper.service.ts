@@ -10,8 +10,10 @@ export class ScraperService {
   private readonly logger = new Logger(ScraperService.name);
   private readonly pageRenderingTimeout = 60000;
   private readonly maxRetry = 10;
+  // private readonly userAgent =
+  //   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
   private readonly userAgent =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
 
   async scrap(url: string, parser: ProductParser) {
     return this.scrapProducts(url, parser);
@@ -33,7 +35,7 @@ export class ScraperService {
         waitUntil: 'load',
         timeout: this.pageRenderingTimeout,
       });
-      await page.click('a.button');
+      await page.click('a');
 
       const contents = await page.evaluate(() => document.body.innerHTML);
       this.logger.debug(contents);
