@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class SrcapService {
   constructor(private prisma: PrismaService) {}
 
-  async findScrapedDataByDateRange(start: Date, end: Date) {
+  async findScrapedDataByDateRange(category: string, start: Date, end: Date) {
     const result = await this.prisma.kreamProduct.findMany({
       select: {
         category: true,
@@ -30,9 +30,9 @@ export class SrcapService {
           gte: start,
           lte: end,
         },
+        category,
       },
     });
-
     return result;
   }
 
