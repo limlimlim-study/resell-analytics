@@ -32,6 +32,9 @@ export class SrcapService {
         },
         category,
       },
+      orderBy: {
+        scrapedAt: 'asc',
+      },
     });
     return result;
   }
