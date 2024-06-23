@@ -9,9 +9,9 @@ class RisingSaleProductParser extends ProductParser {
   constructor(
     protected evaluator: PageEvaluator,
     protected _category: string,
-    protected _time: number,
+    protected _date: Date,
   ) {
-    super(evaluator, _category, _time);
+    super(evaluator, _category, _date);
   }
 
   async parse(page: Page): Promise<Product[]> {
@@ -55,7 +55,8 @@ class RisingSaleProductParser extends ProductParser {
         image,
         url,
         isBrand,
-        time: this._time,
+        time: this.time,
+        scrapedAt: this._date,
       };
     });
 

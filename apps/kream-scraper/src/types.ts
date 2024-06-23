@@ -40,4 +40,5 @@ export interface Product {
   image: string;
   time: number;
   isBrand: boolean;
+  scrapedAt: Date;
 }

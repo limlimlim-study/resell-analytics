@@ -10,13 +10,13 @@ class ProductParser {
   }
 
   get time() {
-    return this._time;
+    return this._date.getTime();
   }
 
   constructor(
     protected evaluator: PageEvaluator,
     protected _category: string,
-    protected _time: number,
+    protected _date: Date,
   ) {}
 
   async parse(page: Page): Promise<Product[]> {
@@ -60,7 +60,8 @@ class ProductParser {
         image,
         url,
         isBrand,
-        time: this._time,
+        scrapedAt: this._date,
+        time: this.time,
       };
     });
 
