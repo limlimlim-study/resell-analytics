@@ -55,7 +55,6 @@ class RisingSaleProductParser extends ProductParser {
         image,
         url,
         isBrand,
-        time: this.time,
         scrapedAt: this._date,
       };
     });

@@ -28,8 +28,7 @@ model KreamProduct {
   image          String
   url            String
   isBrand        Boolean
-  time           BigInt
   scrapedAt      DateTime @default(now())
 
-  @@index([time], name: "time_idx")
+  @@index([scrapedAt], name: "scrapedAt_idx")
 }

@@ -38,7 +38,6 @@ export interface Product {
   style: number;
   sales: number;
   image: string;
-  time: number;
   isBrand: boolean;
   scrapedAt: Date;
 }

@@ -9,10 +9,6 @@ class ProductParser {
     return this._category;
   }
 
-  get time() {
-    return this._date.getTime();
-  }
-
   constructor(
     protected evaluator: PageEvaluator,
     protected _category: string,
@@ -61,7 +57,6 @@ class ProductParser {
         url,
         isBrand,
         scrapedAt: this._date,
-        time: this.time,
       };
     });
 

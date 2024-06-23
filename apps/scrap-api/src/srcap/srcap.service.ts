@@ -8,23 +8,6 @@ export class SrcapService {
 
   async findScrapedDataByDateRange(category: string, start: Date, end: Date) {
     const result = await this.prisma.kreamProduct.findMany({
-      select: {
-        category: true,
-        productId: true,
-        rank: true,
-        brand: true,
-        name: true,
-        translatedName: true,
-        amount: true,
-        wish: true,
-        style: true,
-        sales: true,
-        image: true,
-        url: true,
-        isBrand: true,
-        time: false,
-        scrapedAt: true,
-      },
       where: {
         scrapedAt: {
           gte: start,

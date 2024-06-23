@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Product` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Product";
-
 -- CreateTable
 CREATE TABLE "KreamProduct" (
     "id" SERIAL NOT NULL,
@@ -23,10 +14,10 @@ CREATE TABLE "KreamProduct" (
     "image" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "isBrand" BOOLEAN NOT NULL,
-    "time" BIGINT NOT NULL,
+    "scrapedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "KreamProduct_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE INDEX "time_idx" ON "KreamProduct"("time");
+CREATE INDEX "scrapedAt_idx" ON "KreamProduct"("scrapedAt");
