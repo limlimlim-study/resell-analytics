@@ -4,6 +4,7 @@ import {
   Get,
   Logger,
   Param,
+  Post,
   Query,
 } from '@nestjs/common';
 import { SrcapService } from './srcap.service';
@@ -37,7 +38,7 @@ export class SrcapController {
     );
   }
 
-  @Get('migrate')
+  @Post('migrate')
   migrateTimeToScrapedAt() {
     return this.srcapService.migratioTimeToScrapedAt();
   }
