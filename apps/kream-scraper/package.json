@@ -10,6 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "dotenv -e .env.development nest start --watch",
+    "start:prod": "dotenv -e .env.production nest start --watch",
     "start:debug": "dotenv -e .env.development nest start --debug --watch",
     "dev:pm2:start": "pm2 start ecosystem.config.js --env development",
     "dev:pm2:stop": "pm2 stop ecosystem.config.js --env development",

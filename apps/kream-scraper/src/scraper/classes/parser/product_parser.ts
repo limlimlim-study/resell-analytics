@@ -38,7 +38,7 @@ class ProductParser {
       const translatedName = String(
         $item.find('.translated_name').text(),
       ).trim();
-      const amount = parseInt($item.find('.amount').text());
+      const amount = extractNumbers($item.find('.amount').text());
       const wish = extractNumbers($item.find('.wish_figure .text').text());
       const style = extractNumbers($item.find('.review_figure .text').text());
       const sales = extractNumbers($item.find('.status_value').text());
