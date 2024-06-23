@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'scrap-api',
+      name: 'kream-scrap-api',
       script: 'dist/main.js',
       env: {
         NODE_ENV: 'development',
