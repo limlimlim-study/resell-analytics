@@ -21,7 +21,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 export function DatePickerWithRange({ className, onSelectRange }: Props) {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: addDays(new Date(), -10),
+    from: addDays(new Date(), -1),
     to: new Date(),
   });
 

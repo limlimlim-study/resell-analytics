@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { DatePickerWithRange } from "./DateRangePicker";
 import { DateRange } from "react-day-picker";
 import {
@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import useSearch from "../hooks/useSearch";
 
 const productCategories = [
   {
@@ -64,8 +65,12 @@ const SearchArea = () => {
   const [dateRange, setDateRange] = useState<DateRange>();
   const [category, setCategory] = useState<string>();
   const [enableSearch, setEnableSearch] = useState<boolean>();
+  const { search } = useSearch();
+
   const onClickSearch = () => {
-    console.log(category, dateRange);
+    if (!category) return;
+    if (!dateRange) return;
+    search(category, dateRange);
   };
 
   const seelctItems = useMemo(() => {
