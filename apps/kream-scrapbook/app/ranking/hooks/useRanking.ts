@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { RankingContext } from "../context/RankingContext";
 
-const useSearch = () => {
+const useRanking = () => {
   const context = useContext(RankingContext);
   if (!context) {
     throw new Error("useSearch must be used within a RankingProvider");
@@ -9,4 +9,4 @@ const useSearch = () => {
   return context;
 };
 
-export default useSearch;
+export default useRanking;

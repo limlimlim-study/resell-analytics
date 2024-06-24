@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { use, useContext, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import Slider from "rc-slider";
-import useSearch from "../hooks/useSearch";
+import useSearch from "../hooks/useRanking";
 import { Button } from "@/components/ui/button";
+import useRanking from "../hooks/useRanking";
 
 import "rc-slider/assets/index.css";
 
 const TimeSlider = () => {
-  const [sliderValue, setSliderValue] = useState(0);
+  const { setTime } = useRanking();
   const { rankingData } = useSearch();
   const [minMax, setMinMax] = useState([0, 0]);
 
@@ -36,6 +37,10 @@ const TimeSlider = () => {
     }, {});
   }, [rankingData]);
 
+  const onChange = (value: number | number[]) => {
+    setTime(value);
+  };
+
   useEffect(() => {
     if (!rankingData.length) return;
     const values = rankingData.map((data: RankingData) => data.value);
@@ -51,9 +56,7 @@ const TimeSlider = () => {
           max={minMax[1]}
           step={null}
           marks={sliderMarks}
-          onChange={(e) => {
-            console.log(e);
-          }}
+          onChange={onChange}
         />
       </div>
       <Button disabled={rankingData.length === 0}>재생</Button>

@@ -1,6 +1,6 @@
 import React from "react";
 import SearchArea from "./components/SearchArea";
-import ListArea from "./components/ListArea";
+import RankingArea from "./components/RankingArea";
 import { Badge } from "@/components/ui/badge";
 import { RankingProvider } from "./context/RankingContext";
 import TimeSlider from "./components/TimeSlider";
@@ -17,7 +17,7 @@ const RankingPage = () => {
         </div>
 
         <SearchArea />
-        <ListArea />
+        <RankingArea />
         <TimeSlider />
       </div>
     </RankingProvider>

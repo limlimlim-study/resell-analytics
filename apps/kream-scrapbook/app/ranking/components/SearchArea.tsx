@@ -1,8 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { DatePickerWithRange } from "./DateRangePicker";
+import React, { useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import {
   Select,
@@ -12,7 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import useSearch from "../hooks/useSearch";
+import { DatePickerWithRange } from "./DateRangePicker";
+import useSearch from "../hooks/useRanking";
 
 const productCategories = [
   {
