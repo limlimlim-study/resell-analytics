@@ -46,6 +46,7 @@ const TimeSlider = () => {
   }, [labelStyles, rankingData]);
 
   useEffect(() => {
+    if (!rankingData.length) return;
     const values = rankingData.map((data: RankingData) => data.value);
     setMinMax([Math.min(...values), Math.max(...values)]);
   }, [rankingData]);
