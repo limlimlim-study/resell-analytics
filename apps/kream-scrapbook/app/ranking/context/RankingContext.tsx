@@ -22,7 +22,11 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       if (group) {
         group.products.push(item);
       } else {
-        const g = { key: item.scrapedAt, products: [] };
+        const g = {
+          key: item.scrapedAt,
+          value: new Date(item.scrapedAt).getTime(),
+          products: [],
+        };
         acc.push(g);
       }
       return acc;
