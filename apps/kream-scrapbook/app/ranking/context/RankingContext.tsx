@@ -4,8 +4,10 @@ import React, { createContext, useState, ReactElement } from "react";
 import { DateRange } from "react-day-picker";
 
 interface RankingContextType {
-  rankingData: RankingData[];
+  rankingData: KreamProduct[];
+  rankingGroup: RankingGroup[];
   currentProducts: KreamProduct[];
+  prevProducts: KreamProduct[];
   search: (category: string, dateRange: DateRange) => Promise<void>;
   setTime: (value: number) => void;
 }
@@ -13,16 +15,29 @@ interface RankingContextType {
 export const RankingContext = createContext<RankingContextType | null>(null);
 
 export const RankingProvider = ({ children }: { children: ReactElement }) => {
-  const [rankingData, setRankingData] = useState<RankingData[]>([]);
+  const [rankingGroup, setRankingGroup] = useState<RankingGroup[]>([]);
+  const [rankingData, setRankingData] = useState<KreamProduct[]>([]);
   const [currentProducts, setCurrnetProducts] = useState<KreamProduct[]>([]);
+  const [prevProducts, setPrevProducts] = useState<KreamProduct[]>([]);
 
   const search = async (category: string, dateRange: DateRange) => {
     const response = await fetch(
       `api/ranking?category=${category}&startTime=${dateRange.from?.toISOString()}&endTime=${dateRange.to?.toISOString()}`
     );
-    const result: any[] = await response.json();
-    const sortedList = result.reduce((acc, item) => {
+    const result: KreamProduct[] = await response.json();
+    setRankingData(result);
+    const groupedList = getGroupedData(result);
+    groupedList.forEach((data: RankingGroup) => {
+      data.products.sort((a: KreamProduct, b: KreamProduct) => a.rank - b.rank);
+    });
+
+    setRankingGroup(groupedList);
+  };
+
+  const getGroupedData = (products: KreamProduct[]) => {
+    return products.reduce<RankingGroup[]>((acc, item: KreamProduct) => {
       let group = acc.find((i: any) => i.key === item.scrapedAt);
+
       if (!group) {
         group = {
           key: item.scrapedAt,
@@ -34,15 +49,14 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       group.products.push(item);
       return acc;
     }, []);
-    sortedList.forEach((data: RankingData) => {
-      data.products.sort((a: KreamProduct, b: KreamProduct) => a.rank - b.rank);
-    });
-    setRankingData(sortedList);
   };
 
   const setTime = (value: number) => {
-    const current = rankingData.find((data) => data.value === value);
+    const current = rankingGroup.find((data) => data.value === value);
     if (!current) return;
+    if (currentProducts) {
+      setPrevProducts(currentProducts);
+    }
     setCurrnetProducts(current.products);
   };
 
@@ -50,7 +64,9 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
     <RankingContext.Provider
       value={{
         rankingData,
+        rankingGroup,
         currentProducts,
+        prevProducts,
         search,
         setTime,
       }}

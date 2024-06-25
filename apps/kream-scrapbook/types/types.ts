@@ -10,14 +10,24 @@ interface KreamProduct {
   isBrand: boolean;
   productId: string;
   sales: number;
-  scrapedAt: Date;
+  scrapedAt: string;
   style: number;
   url: string;
   wish: number;
 }
 
-interface RankingData {
+interface RankingGroup {
   key: string;
   value: number;
   products: KreamProduct[];
+}
+
+interface Ranker {
+  rank: number;
+  brand: string;
+  name: string;
+  translatedName: string;
+  id: number;
+  image: string;
+  productId: string;
 }

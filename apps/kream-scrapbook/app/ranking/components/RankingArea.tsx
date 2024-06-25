@@ -1,35 +1,88 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
+import { useTransition, animated } from "@react-spring/web";
 import useRanking from "../hooks/useRanking";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
+import RankingItem from "./RankingItem";
 
 const RankingArea = () => {
-  const { currentProducts } = useRanking();
+  const { rankingData, currentProducts, rankingGroup } = useRanking();
+  const [allRranker, setAllRanker] = useState<Ranker[]>([]);
+  const [rankers, setRankers] = useState<Ranker[]>([]);
 
-  const products = useMemo(() => {
-    return currentProducts.map((p) => {
-      return (
-        <div key={p.productId} className="flex gap-2">
-          <Badge
-            className="w-[40px] flex items-center justify-center"
-            variant="secondary"
-          >
-            {p.rank}
-          </Badge>
-          {p.translatedName}
-        </div>
+  const transitions = useTransition(
+    rankers.map((data) => {
+      if (data.rank === -1) {
+        return {
+          ...data,
+          x: Math.random() * 1000,
+          y: 1000,
+        };
+      }
+      return {
+        ...data,
+        x: ((data.rank - 1) % 10) * 63,
+        y: parseInt(((data.rank - 1) / 10).toString()) * 63,
+      };
+    }),
+    {
+      key: (item: any) => item.productId,
+      update: (item: any) => {
+        return {
+          transform: `translate3d(${item.x}px, ${item.y}px, 0)`,
+        };
+      },
+    }
+  );
+
+  useEffect(() => {
+    const updatedRankers = allRranker.map((ranker) => {
+      const target = currentProducts.find(
+        (p) => p.productId === ranker.productId
       );
+      return { ...ranker, rank: target ? target.rank : -1 };
     });
-  }, [currentProducts]);
+    setRankers(updatedRankers);
+  }, [allRranker, currentProducts, rankingGroup]);
 
+  useEffect(() => {
+    if (!rankingData.length) return;
+    const rankerMap = rankingData.reduce<Map<string, Ranker>>((acc, item) => {
+      if (!acc.get(item.productId)) {
+        acc.set(item.productId, {
+          rank: -1,
+          brand: item.brand,
+          name: item.name,
+          translatedName: item.translatedName,
+          id: item.id,
+          image: item.image,
+          productId: item.productId,
+        });
+      }
+      return acc;
+    }, new Map());
+
+    setAllRanker(Array.from(rankerMap.values()));
+  }, [rankingData, currentProducts]);
   return (
-    <Card className="p-3 h-full overflow-hidden">
-      <ScrollArea className="h-full w-full rounded-md border overflow-y-auto">
-        {products}
-      </ScrollArea>
+    <Card className="p-3 h-full overflow-hidden min-h-[500px] pr-[67px]">
+      <div>
+        <div className="relative">
+          {transitions((style, item, t, index) => (
+            <animated.div
+              style={{
+                position: "absolute",
+                ...style,
+              }}
+            >
+              <div key={item.productId}>
+                <RankingItem data={item} />
+              </div>
+            </animated.div>
+          ))}
+        </div>
+      </div>
     </Card>
   );
 };

@@ -11,41 +11,32 @@ import "rc-slider/assets/index.css";
 
 const TimeSlider = () => {
   const { setTime } = useRanking();
-  const { rankingData } = useSearch();
+  const { rankingGroup } = useSearch();
   const [minMax, setMinMax] = useState([0, 0]);
 
-  const labelStyles = useMemo(() => {
-    return {
-      mt: "4",
-      ml: "-2.5",
-      fontSize: 11,
-      transform: "rotate(45deg)",
-    };
-  }, []);
-
   const sliderMarks = useMemo(() => {
-    return rankingData.reduce((acc: any, item, i) => {
+    return rankingGroup.reduce((acc: any, item, i) => {
       const date = new Date(item.key);
       acc[item.value] = {
         style: {
           marginTop: 5,
           transform: "rotate(45deg)",
         },
-        label: i % 3 === 0 ? format(date, "hh:mm") : " ",
+        label: i % 5 === 0 ? format(date, "hh:mm") : " ",
       };
       return acc;
     }, {});
-  }, [rankingData]);
+  }, [rankingGroup]);
 
   const onChange = (value: number | number[]) => {
-    setTime(value);
+    setTime(value as number);
   };
 
   useEffect(() => {
-    if (!rankingData.length) return;
-    const values = rankingData.map((data: RankingData) => data.value);
+    if (!rankingGroup.length) return;
+    const values = rankingGroup.map((data: RankingGroup) => data.value);
     setMinMax([Math.min(...values), Math.max(...values)]);
-  }, [rankingData]);
+  }, [rankingGroup]);
 
   return (
     <div className="flex gap-10 h-[100px] mt-[30px]">
@@ -56,10 +47,10 @@ const TimeSlider = () => {
           max={minMax[1]}
           step={null}
           marks={sliderMarks}
-          onChange={onChange}
+          onChangeComplete={onChange}
         />
       </div>
-      <Button disabled={rankingData.length === 0}>재생</Button>
+      <Button disabled={rankingGroup.length === 0}>재생</Button>
     </div>
   );
 };
