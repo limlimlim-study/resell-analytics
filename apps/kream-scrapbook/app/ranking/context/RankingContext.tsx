@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useState, ReactElement } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactElement,
+  useEffect,
+  useCallback,
+} from "react";
 import { DateRange } from "react-day-picker";
 
 interface RankingContextType {
@@ -32,6 +38,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
     });
 
     setRankingGroup(groupedList);
+    setCurrnetProducts(groupedList[0].products);
   };
 
   const getGroupedData = (products: KreamProduct[]) => {
@@ -51,14 +58,26 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
     }, []);
   };
 
-  const setTime = (value: number) => {
-    const current = rankingGroup.find((data) => data.value === value);
-    if (!current) return;
-    if (currentProducts) {
-      setPrevProducts(currentProducts);
-    }
-    setCurrnetProducts(current.products);
-  };
+  const setTime = useCallback(
+    (value: number) => {
+      console.log(
+        "setTime : ",
+        rankingGroup.find((data) => data.value === value)
+      );
+      const current = rankingGroup.find((data) => data.value === value);
+      if (!current) return;
+      if (currentProducts) {
+        setPrevProducts(currentProducts);
+      }
+      setCurrnetProducts(current.products);
+    },
+    [currentProducts, rankingGroup]
+  );
+
+  useEffect(() => {
+    if (!rankingGroup || !rankingGroup.length) return;
+    // setTime(rankingGroup[0].value);
+  }, [rankingGroup, setTime]);
 
   return (
     <RankingContext.Provider

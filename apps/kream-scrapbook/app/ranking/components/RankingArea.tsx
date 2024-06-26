@@ -28,6 +28,14 @@ const RankingArea = () => {
     }),
     {
       key: (item: any) => item.productId,
+      from: (item: any) => {
+        return {
+          opacity: 0,
+          transform: `translate3d(${item.x}px, ${item.y}px, 0)`,
+        };
+      },
+      enter: { opacity: 1 },
+      leave: { opacity: 0 },
       update: (item: any) => {
         return {
           transform: `translate3d(${item.x}px, ${item.y}px, 0)`,
@@ -66,21 +74,23 @@ const RankingArea = () => {
     setAllRanker(Array.from(rankerMap.values()));
   }, [rankingData, currentProducts]);
   return (
-    <Card className="p-3 h-full overflow-hidden min-h-[500px] pr-[67px]">
+    <Card className="p-3 h-full overflow-hidden min-h-[500px] pl-[67px]">
       <div>
         <div className="relative">
-          {transitions((style, item, t, index) => (
-            <animated.div
-              style={{
-                position: "absolute",
-                ...style,
-              }}
-            >
-              <div key={item.productId}>
-                <RankingItem data={item} />
-              </div>
-            </animated.div>
-          ))}
+          {transitions((style, item, t, index) => {
+            return (
+              <animated.div
+                style={{
+                  position: "absolute",
+                  ...style,
+                }}
+              >
+                <div key={item.productId}>
+                  <RankingItem data={item} />
+                </div>
+              </animated.div>
+            );
+          })}
         </div>
       </div>
     </Card>

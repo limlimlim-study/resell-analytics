@@ -1,8 +1,9 @@
 "use client";
 
-import { use, useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import Slider from "rc-slider";
+import { debounce } from "lodash";
 import useSearch from "../hooks/useRanking";
 import { Button } from "@/components/ui/button";
 import useRanking from "../hooks/useRanking";
@@ -47,7 +48,7 @@ const TimeSlider = () => {
           max={minMax[1]}
           step={null}
           marks={sliderMarks}
-          onChangeComplete={onChange}
+          onChange={debounce(onChange, 300)}
         />
       </div>
       <Button disabled={rankingGroup.length === 0}>재생</Button>

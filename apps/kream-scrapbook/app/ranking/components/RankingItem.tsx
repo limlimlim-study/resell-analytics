@@ -7,7 +7,6 @@ interface Props {
 }
 
 const RankingItem = ({ data }: Props) => {
-  console.log(data.image);
   const [imageUrl] = useState(() => {
     const imageUrl = data.image;
     const smallImage = imageUrl.replace("type=m", "type=s");
