@@ -2,57 +2,25 @@
 
 import { Card } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
-import { useTransition, animated } from "@react-spring/web";
 import useRanking from "../hooks/useRanking";
 import RankingItem from "./RankingItem";
 
+const itemSize = 63;
+
 const RankingArea = () => {
   const { rankingData, currentProducts, rankingGroup } = useRanking();
-  const [allRranker, setAllRanker] = useState<Ranker[]>([]);
+  const [allRanker, setAllRanker] = useState<Ranker[]>([]);
   const [rankers, setRankers] = useState<Ranker[]>([]);
 
-  const transitions = useTransition(
-    rankers.map((data) => {
-      if (data.rank === -1) {
-        return {
-          ...data,
-          x: Math.random() * 1000,
-          y: 1000,
-        };
-      }
-      return {
-        ...data,
-        x: ((data.rank - 1) % 10) * 63,
-        y: parseInt(((data.rank - 1) / 10).toString()) * 63,
-      };
-    }),
-    {
-      key: (item: any) => item.productId,
-      from: (item: any) => {
-        return {
-          opacity: 0,
-          transform: `translate3d(${item.x}px, ${item.y}px, 0)`,
-        };
-      },
-      enter: { opacity: 1 },
-      leave: { opacity: 0 },
-      update: (item: any) => {
-        return {
-          transform: `translate3d(${item.x}px, ${item.y}px, 0)`,
-        };
-      },
-    }
-  );
-
   useEffect(() => {
-    const updatedRankers = allRranker.map((ranker) => {
+    const updatedRankers = allRanker.map((ranker) => {
       const target = currentProducts.find(
         (p) => p.productId === ranker.productId
       );
       return { ...ranker, rank: target ? target.rank : -1 };
     });
     setRankers(updatedRankers);
-  }, [allRranker, currentProducts, rankingGroup]);
+  }, [allRanker, currentProducts, rankingGroup]);
 
   useEffect(() => {
     if (!rankingData.length) return;
@@ -73,25 +41,29 @@ const RankingArea = () => {
 
     setAllRanker(Array.from(rankerMap.values()));
   }, [rankingData, currentProducts]);
+
+  const containerWidth = 10 * itemSize;
+  const containerHeight = Math.ceil(rankers.length / 10) * itemSize;
+
   return (
-    <Card className="p-3 h-full overflow-hidden min-h-[500px] pl-[67px]">
-      <div>
-        <div className="relative">
-          {transitions((style, item, t, index) => {
-            return (
-              <animated.div
-                style={{
-                  position: "absolute",
-                  ...style,
-                }}
-              >
-                <div key={item.productId}>
-                  <RankingItem data={item} />
-                </div>
-              </animated.div>
-            );
-          })}
-        </div>
+    <Card className="p-3 h-full overflow-hidden min-h-[500px] flex justify-center">
+      <div
+        className="relative"
+        style={{ width: containerWidth, height: containerHeight }}
+      >
+        {rankers
+          .filter((item) => item.rank !== -1)
+          .map((item, index) => (
+            <div
+              key={item.productId}
+              className="absolute transition-transform duration-1000 ease-in-out"
+              style={{
+                transform: `translate3d(${((item.rank - 1) % 10) * itemSize}px, ${Math.floor((item.rank - 1) / 10) * itemSize}px, 0)`,
+              }}
+            >
+              <RankingItem data={item} />
+            </div>
+          ))}
       </div>
     </Card>
   );

@@ -48,7 +48,7 @@ const TimeSlider = () => {
           max={minMax[1]}
           step={null}
           marks={sliderMarks}
-          onChange={debounce(onChange, 300)}
+          onChange={onChange}
         />
       </div>
       <Button disabled={rankingGroup.length === 0}>재생</Button>
