@@ -32,8 +32,8 @@ export class SrcapController {
     );
     return this.srcapService.findScrapedDataByDateRange(
       category,
-      start.toISOString(),
-      end.toISOString(),
+      startTime,
+      endTime,
     );
   }
 }
