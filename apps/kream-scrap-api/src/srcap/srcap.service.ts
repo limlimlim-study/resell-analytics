@@ -9,8 +9,8 @@ export class SrcapService {
     const result = await this.prisma.kreamProduct.findMany({
       where: {
         scrapedAt: {
-          gte: start,
-          lte: end,
+          gte: start.toISOString(),
+          lte: end.toISOString(),
         },
         category,
       },

@@ -1,5 +1,6 @@
 "use client";
 
+import { addHours } from "date-fns";
 import React, {
   createContext,
   useState,
@@ -27,12 +28,19 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [prevProducts, setPrevProducts] = useState<KreamProduct[]>([]);
 
   const search = async (category: string, dateRange: DateRange) => {
+    const from = dateRange.from!;
+    const to = dateRange.to!;
+    console.log("from : ", from.toDateString, from?.toISOString());
+    console.log("to : ", to.toDateString(), to.toISOString());
+    console.log("----------");
+
     const response = await fetch(
-      `api/ranking?category=${category}&startTime=${dateRange.from?.toISOString()}&endTime=${dateRange.to?.toISOString()}`
+      `api/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
     );
     const result: KreamProduct[] = await response.json();
     setRankingData(result);
     const groupedList = getGroupedData(result);
+    console.log(groupedList);
     groupedList.forEach((data: RankingGroup) => {
       data.products.sort((a: KreamProduct, b: KreamProduct) => a.rank - b.rank);
     });

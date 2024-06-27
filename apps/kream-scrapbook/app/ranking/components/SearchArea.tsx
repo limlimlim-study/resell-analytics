@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { DatePickerWithRange } from "./DateRangePicker";
+import { DatePickerWithRange } from "./DatePickerWithRange";
 import useSearch from "../hooks/useRanking";
 
 const productCategories = [

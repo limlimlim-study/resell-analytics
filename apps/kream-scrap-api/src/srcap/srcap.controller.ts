@@ -23,8 +23,8 @@ export class SrcapController {
     const start = dayjs(startTime).startOf('day');
     const end = dayjs(endTime).endOf('day');
     const diffInDays = end.diff(start, 'day');
-    if (diffInDays > 7) {
-      throw new BadRequestException('The date range should not exceed 7 days.');
+    if (diffInDays > 3) {
+      throw new BadRequestException('The date range should not exceed 3 days.');
     }
 
     this.logger.debug(
