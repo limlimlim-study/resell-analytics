@@ -1,14 +1,17 @@
 "use client";
 
-import { addHours } from "date-fns";
+import { addHours, differenceInDays, endOfDay, startOfDay } from "date-fns";
 import React, {
   createContext,
   useState,
   ReactElement,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 import { DateRange } from "react-day-picker";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface RankingContextType {
   rankingData: KreamProduct[];
@@ -28,8 +31,14 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [prevProducts, setPrevProducts] = useState<KreamProduct[]>([]);
 
   const search = async (category: string, dateRange: DateRange) => {
-    const from = dateRange.from!;
-    const to = dateRange.to!;
+    const from = startOfDay(dateRange.from!);
+    const to = endOfDay(dateRange.to!);
+    const diffDays = Math.abs(differenceInDays(from, to));
+
+    if (diffDays >= 3) {
+      toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
+      return;
+    }
 
     const response = await fetch(
       `api/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
@@ -37,7 +46,6 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
     const result: KreamProduct[] = await response.json();
     setRankingData(result);
     const groupedList = getGroupedData(result);
-    console.log(groupedList);
     groupedList.forEach((data: RankingGroup) => {
       data.products.sort((a: KreamProduct, b: KreamProduct) => a.rank - b.rank);
     });
@@ -75,11 +83,6 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
     [currentProducts, rankingGroup]
   );
 
-  useEffect(() => {
-    if (!rankingGroup || !rankingGroup.length) return;
-    // setTime(rankingGroup[0].value);
-  }, [rankingGroup, setTime]);
-
   return (
     <RankingContext.Provider
       value={{
@@ -92,6 +95,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       }}
     >
       {children}
+      <ToastContainer className="text-sm" autoClose={5000} />
     </RankingContext.Provider>
   );
 };
