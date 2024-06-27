@@ -82,7 +82,9 @@ const SearchArea = () => {
   }, []);
 
   useEffect(() => {
-    setEnableSearch(!!(category && dateRange));
+    setEnableSearch(
+      !!(category && dateRange && dateRange.from && dateRange.to)
+    );
   }, [category, dateRange]);
 
   return (

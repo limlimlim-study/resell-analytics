@@ -30,9 +30,6 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const search = async (category: string, dateRange: DateRange) => {
     const from = dateRange.from!;
     const to = dateRange.to!;
-    console.log("from : ", from.toDateString, from?.toISOString());
-    console.log("to : ", to.toDateString(), to.toISOString());
-    console.log("----------");
 
     const response = await fetch(
       `api/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
@@ -68,10 +65,6 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
 
   const setTime = useCallback(
     (value: number) => {
-      console.log(
-        "setTime : ",
-        rankingGroup.find((data) => data.value === value)
-      );
       const current = rankingGroup.find((data) => data.value === value);
       if (!current) return;
       if (currentProducts) {
