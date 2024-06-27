@@ -18,14 +18,12 @@ const TimeSlider = () => {
   const sliderMarks = useMemo(() => {
     return rankingGroup.reduce((acc: any, item, i) => {
       const date = new Date(item.key);
-      const adjustedDate = addHours(date, -9); // 9시간을 더해 한국 시간으로 보정
       acc[item.value] = {
         style: {
           marginTop: 5,
           transform: "rotate(45deg)",
         },
-        label:
-          i % 5 === 0 ? format(adjustedDate, "HH:mm", { locale: ko }) : " ",
+        label: i % 5 === 0 ? format(date, "HH:mm") : " ",
       };
       return acc;
     }, {});
