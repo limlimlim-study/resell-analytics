@@ -10,7 +10,7 @@ import useRanking from "../hooks/useRanking";
 import "rc-slider/assets/index.css";
 
 const TimeSlider = () => {
-  const { setTime } = useRanking();
+  const { currentTime, setTime } = useRanking();
   const { rankingGroup } = useSearch();
   const [minMax, setMinMax] = useState([0, 0]);
 
@@ -39,18 +39,23 @@ const TimeSlider = () => {
   }, [rankingGroup]);
 
   return (
-    <div className="flex gap-10 h-[100px] mt-[30px]">
-      <div className="w-full">
-        <Slider
-          dotStyle={{ display: "none" }}
-          min={minMax[0]}
-          max={minMax[1]}
-          step={null}
-          marks={sliderMarks}
-          onChange={onChange}
-        />
+    <div className="gap-10 h-[100px] mb-[20px] ">
+      <div className="h-[30px] font-bold text-slate-400 text-xl">
+        {format(currentTime, "yyyy-MM-dd hh:ss")}
       </div>
-      <Button disabled={rankingGroup.length === 0}>재생</Button>
+      <div className="flex gap-10">
+        <div className="w-full">
+          <Slider
+            dotStyle={{ display: "none" }}
+            min={minMax[0]}
+            max={minMax[1]}
+            step={null}
+            marks={sliderMarks}
+            onChange={onChange}
+          />
+        </div>
+        <Button disabled={rankingGroup.length === 0}>재생</Button>
+      </div>
     </div>
   );
 };

@@ -1,13 +1,11 @@
 "use client";
 
-import { addHours, differenceInDays, endOfDay, startOfDay } from "date-fns";
+import { differenceInDays, endOfDay, startOfDay } from "date-fns";
 import React, {
   createContext,
   useState,
   ReactElement,
-  useEffect,
   useCallback,
-  useRef,
 } from "react";
 import { DateRange } from "react-day-picker";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,6 +16,7 @@ interface RankingContextType {
   rankingGroup: RankingGroup[];
   currentProducts: KreamProduct[];
   prevProducts: KreamProduct[];
+  currentTime: number;
   search: (category: string, dateRange: DateRange) => Promise<void>;
   setTime: (value: number) => void;
 }
@@ -29,6 +28,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [rankingData, setRankingData] = useState<KreamProduct[]>([]);
   const [currentProducts, setCurrnetProducts] = useState<KreamProduct[]>([]);
   const [prevProducts, setPrevProducts] = useState<KreamProduct[]>([]);
+  const [currentTime, setcurrentTime] = useState<number>();
 
   const search = async (category: string, dateRange: DateRange) => {
     const from = startOfDay(dateRange.from!);
@@ -73,6 +73,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
 
   const setTime = useCallback(
     (value: number) => {
+      setcurrentTime(value);
       const current = rankingGroup.find((data) => data.value === value);
       if (!current) return;
       if (currentProducts) {
@@ -90,6 +91,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
         rankingGroup,
         currentProducts,
         prevProducts,
+        currentTime,
         search,
         setTime,
       }}
