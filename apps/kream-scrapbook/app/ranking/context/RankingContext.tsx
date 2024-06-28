@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { DateRange } from "react-day-picker";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 interface RankingContextType {
@@ -17,6 +18,7 @@ interface RankingContextType {
   currentProducts: KreamProduct[];
   prevProducts: KreamProduct[];
   currentTime: number;
+  isLoading: boolean;
   search: (category: string, dateRange: DateRange) => Promise<void>;
   setTime: (value: number) => void;
 }
@@ -28,30 +30,40 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [rankingData, setRankingData] = useState<KreamProduct[]>([]);
   const [currentProducts, setCurrnetProducts] = useState<KreamProduct[]>([]);
   const [prevProducts, setPrevProducts] = useState<KreamProduct[]>([]);
-  const [currentTime, setcurrentTime] = useState<number>();
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const search = async (category: string, dateRange: DateRange) => {
-    const from = startOfDay(dateRange.from!);
-    const to = endOfDay(dateRange.to!);
-    const diffDays = Math.abs(differenceInDays(from, to));
+    setIsLoading(true);
+    try {
+      const from = startOfDay(dateRange.from!);
+      const to = endOfDay(dateRange.to!);
+      const diffDays = Math.abs(differenceInDays(from, to));
 
-    if (diffDays >= 3) {
-      toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
-      return;
+      if (diffDays >= 3) {
+        toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
+        return;
+      }
+
+      const response = await fetch(
+        `api/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
+      );
+      const result: KreamProduct[] = await response.json();
+      setRankingData(result);
+      const groupedList = getGroupedData(result);
+      groupedList.forEach((data: RankingGroup) => {
+        data.products.sort(
+          (a: KreamProduct, b: KreamProduct) => a.rank - b.rank
+        );
+      });
+
+      setRankingGroup(groupedList);
+      setCurrnetProducts(groupedList[0].products);
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setIsLoading(false);
     }
-
-    const response = await fetch(
-      `api/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
-    );
-    const result: KreamProduct[] = await response.json();
-    setRankingData(result);
-    const groupedList = getGroupedData(result);
-    groupedList.forEach((data: RankingGroup) => {
-      data.products.sort((a: KreamProduct, b: KreamProduct) => a.rank - b.rank);
-    });
-
-    setRankingGroup(groupedList);
-    setCurrnetProducts(groupedList[0].products);
   };
 
   const getGroupedData = (products: KreamProduct[]) => {
@@ -73,7 +85,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
 
   const setTime = useCallback(
     (value: number) => {
-      setcurrentTime(value);
+      setCurrentTime(value);
       const current = rankingGroup.find((data) => data.value === value);
       if (!current) return;
       if (currentProducts) {
@@ -92,6 +104,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
         currentProducts,
         prevProducts,
         currentTime,
+        isLoading,
         search,
         setTime,
       }}

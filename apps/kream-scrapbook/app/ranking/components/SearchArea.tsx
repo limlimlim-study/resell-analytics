@@ -65,7 +65,7 @@ const SearchArea = () => {
   const [dateRange, setDateRange] = useState<DateRange>();
   const [category, setCategory] = useState<string>();
   const [enableSearch, setEnableSearch] = useState<boolean>();
-  const { search } = useSearch();
+  const { search, isLoading } = useSearch();
 
   const onClickSearch = () => {
     if (!category) return;
@@ -105,7 +105,7 @@ const SearchArea = () => {
       <Button
         variant="default"
         onClick={onClickSearch}
-        disabled={!enableSearch}
+        disabled={!enableSearch || isLoading}
       >
         검색
       </Button>
