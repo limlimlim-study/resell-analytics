@@ -31,4 +31,5 @@ interface Ranker {
   id: number;
   image: string;
   productId: string;
+  url: string;
 }

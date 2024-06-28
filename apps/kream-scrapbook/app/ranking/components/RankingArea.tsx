@@ -34,6 +34,7 @@ const RankingArea = () => {
           id: item.id,
           image: item.image,
           productId: item.productId,
+          url: item.url,
         });
       }
       return acc;
