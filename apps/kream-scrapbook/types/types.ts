@@ -19,6 +19,7 @@ interface KreamProduct {
 interface RankingGroup {
   key: string;
   value: number;
+  index: number;
   products: KreamProduct[];
 }
 

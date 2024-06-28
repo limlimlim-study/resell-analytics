@@ -21,6 +21,8 @@ interface RankingContextType {
   isLoading: boolean;
   search: (category: string, dateRange: DateRange) => Promise<void>;
   setTime: (value: number) => void;
+  nextTime: () => void;
+  prevTime: () => void;
 }
 
 export const RankingContext = createContext<RankingContextType | null>(null);
@@ -28,8 +30,9 @@ export const RankingContext = createContext<RankingContextType | null>(null);
 export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [rankingGroup, setRankingGroup] = useState<RankingGroup[]>([]);
   const [rankingData, setRankingData] = useState<KreamProduct[]>([]);
-  const [currentProducts, setCurrnetProducts] = useState<KreamProduct[]>([]);
+  const [currentProducts, setCurrentProducts] = useState<KreamProduct[]>([]);
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const search = async (category: string, dateRange: DateRange) => {
@@ -39,8 +42,9 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       const to = endOfDay(dateRange.to!);
       const diffDays = Math.abs(differenceInDays(from, to));
 
-      if (diffDays >= 3) {
+      if (diffDays > 3) {
         toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
+        setIsLoading(false);
         return;
       }
 
@@ -57,7 +61,9 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       });
 
       setRankingGroup(groupedList);
-      setCurrnetProducts(groupedList[0].products);
+      setCurrentProducts(groupedList[0]?.products || []);
+      setCurrentIndex(0);
+      setCurrentTime(groupedList[0]?.value || 0);
     } catch (e) {
       toast.error(e);
     } finally {
@@ -66,36 +72,76 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const getGroupedData = (products: KreamProduct[]) => {
-    return products.reduce<RankingGroup[]>((acc, item: KreamProduct) => {
-      let group = acc.find((i: any) => i.key === item.scrapedAt);
+    return products.reduce<RankingGroup[]>(
+      (acc, item: KreamProduct, index: number) => {
+        let group = acc.find((i: any) => i.key === item.scrapedAt);
 
-      if (!group) {
-        group = {
-          key: item.scrapedAt,
-          value: new Date(item.scrapedAt).getTime(),
-          products: [],
-        };
-        acc.push(group);
-      }
-      group.products.push(item);
-      return acc;
-    }, []);
+        if (!group) {
+          group = {
+            key: item.scrapedAt,
+            value: new Date(item.scrapedAt).getTime(),
+            index,
+            products: [],
+          };
+          acc.push(group);
+        }
+        group.products.push(item);
+        return acc;
+      },
+      []
+    );
   };
 
-  const setTime = useCallback(
-    (value: number) => {
-      setCurrentTime(value);
-      const current = rankingGroup.find((data) => data.value === value);
-      if (!current) return;
-      setCurrnetProducts(current.products);
+  const setIndex = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= rankingGroup.length) return;
+      setCurrentIndex(index);
+      setCurrentTime(rankingGroup[index].value);
+      setCurrentProducts(rankingGroup[index].products);
     },
     [rankingGroup]
   );
 
+  const setTime = useCallback(
+    (value: number) => {
+      const index = rankingGroup.findIndex((data) => data.value === value);
+      if (index === -1) return;
+      setIndex(index);
+    },
+    [rankingGroup, setIndex]
+  );
+
+  const nextTime = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      const newIndex = prevIndex + 1;
+      if (newIndex < rankingGroup.length) {
+        setCurrentTime(rankingGroup[newIndex].value);
+        setCurrentProducts(rankingGroup[newIndex].products);
+      }
+      return newIndex;
+    });
+  }, [rankingGroup]);
+
+  const prevTime = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      const newIndex = prevIndex - 1;
+      if (newIndex >= 0) {
+        setCurrentTime(rankingGroup[newIndex].value);
+        setCurrentProducts(rankingGroup[newIndex].products);
+      }
+      return newIndex;
+    });
+  }, [rankingGroup]);
+
   useEffect(() => {
     if (!rankingGroup || rankingGroup.length === 0) return;
-    setTime(rankingGroup[0].value);
-  }, [rankingGroup, setTime]);
+    setIndex(0);
+  }, [rankingGroup, setIndex]);
+
+  useEffect(() => {
+    if (!rankingGroup[currentIndex]) return;
+    setTime(rankingGroup[currentIndex].value);
+  }, [currentIndex, rankingGroup, setTime]);
 
   return (
     <RankingContext.Provider
@@ -107,6 +153,8 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
         isLoading,
         search,
         setTime,
+        nextTime,
+        prevTime,
       }}
     >
       {children}
