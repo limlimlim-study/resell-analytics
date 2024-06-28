@@ -14,7 +14,7 @@ const RankingItem = ({ data }: Props) => {
   });
 
   return (
-    <Card className="h-[55px] w-[55px] mb-[1px] relative overflow">
+    <Card className="h-[65px] w-[65px] relative overflow">
       <div className="w-[20px] h-[20px] rounded-full absolute bg-slate-100 border-slate-800 text-[10px] text-slate-800 left-[-5px] top-[-5px] flex justify-center items-center font-bold">
         <div>{data.rank}</div>
       </div>
@@ -22,8 +22,8 @@ const RankingItem = ({ data }: Props) => {
         src={imageUrl}
         alt="product"
         loading="lazy"
-        width={50}
-        height={50}
+        width={100}
+        height={100}
       />
     </Card>
   );

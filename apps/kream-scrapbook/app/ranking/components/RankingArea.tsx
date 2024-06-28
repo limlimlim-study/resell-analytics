@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import useRanking from "../hooks/useRanking";
 import RankingItem from "./RankingItem";
 
-const itemSize = 63;
+const itemSize = 75;
 
 const RankingArea = () => {
   const { rankingData, currentProducts, rankingGroup } = useRanking();
@@ -43,17 +43,16 @@ const RankingArea = () => {
   }, [rankingData, currentProducts]);
 
   const containerWidth = 10 * itemSize;
-  const containerHeight = Math.ceil(rankers.length / 10) * itemSize;
 
   return (
     <Card className="p-3 h-full overflow-hidden min-h-[500px] flex justify-center">
       <div
         className="relative"
-        style={{ width: containerWidth, height: containerHeight }}
+        style={{ width: containerWidth, overflow: "auto" }}
       >
         {rankers
           .filter((item) => item.rank !== -1)
-          .map((item, index) => (
+          .map((item) => (
             <div
               key={item.productId}
               className="absolute transition-transform duration-1000 ease-in-out"
