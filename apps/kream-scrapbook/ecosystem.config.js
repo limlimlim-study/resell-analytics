@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: "kream-scrapbook",
-      script: "node_modules/.bin/next"
-      args: "start"
+      script: "node_modules/.bin/next",
+      args: "start",
     },
   ],
 };
