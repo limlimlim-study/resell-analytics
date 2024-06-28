@@ -64,7 +64,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       setCurrentProducts(groupedList[0]?.products || []);
       setCurrentIndex(0);
       setCurrentTime(groupedList[0]?.value || 0);
-    } catch (e) {
+    } catch (e: any) {
       toast.error(e);
     } finally {
       setIsLoading(false);

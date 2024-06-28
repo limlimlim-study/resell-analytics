@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "kream-phinf.pstatic.net",
       },
+      {
+        protocol: "https",
+        hostname: "fonts.gstatic.com",
+      },
     ],
   },
 };
