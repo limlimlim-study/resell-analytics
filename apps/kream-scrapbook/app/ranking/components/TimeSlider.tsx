@@ -41,9 +41,9 @@ const TimeSlider = () => {
   return (
     <div className="gap-10 h-[100px] mb-[20px] ">
       <div className="h-[30px] font-bold text-slate-400 text-xl">
-        {format(currentTime, "yyyy-MM-dd hh:ss")}
+        {currentTime && format(currentTime, "yyyy-MM-dd HH:mm")}
       </div>
-      <div className="flex gap-10">
+      <div className="flex gap-[50px]">
         <div className="w-full">
           <Slider
             dotStyle={{ display: "none" }}

@@ -20,6 +20,13 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onSelectRange: (date: DateRange) => void;
 }
 
+const modifiers = {
+  disabled: {
+    before: new Date("2024-06-23"),
+    after: new Date(),
+  },
+};
+
 export function DatePickerWithRange({ className, onSelectRange }: Props) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: addDays(new Date(), -1),
@@ -68,6 +75,7 @@ export function DatePickerWithRange({ className, onSelectRange }: Props) {
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
+            modifiers={modifiers}
           />
         </PopoverContent>
       </Popover>
