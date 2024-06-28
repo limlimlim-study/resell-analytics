@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { format, addHours } from "date-fns";
-import { ko } from "date-fns/locale";
+import { format } from "date-fns";
 import Slider from "rc-slider";
 import useSearch from "../hooks/useRanking";
 import { Button } from "@/components/ui/button";
@@ -43,7 +42,7 @@ const TimeSlider = () => {
     <div className="flex gap-10 h-[100px] mt-[30px]">
       <div className="w-full">
         <Slider
-          dots
+          dotStyle={{ display: "none" }}
           min={minMax[0]}
           max={minMax[1]}
           step={null}
