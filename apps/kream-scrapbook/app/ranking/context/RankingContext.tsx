@@ -6,6 +6,7 @@ import React, {
   useState,
   ReactElement,
   useCallback,
+  useEffect,
 } from "react";
 import { DateRange } from "react-day-picker";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +17,6 @@ interface RankingContextType {
   rankingData: KreamProduct[];
   rankingGroup: RankingGroup[];
   currentProducts: KreamProduct[];
-  prevProducts: KreamProduct[];
   currentTime: number;
   isLoading: boolean;
   search: (category: string, dateRange: DateRange) => Promise<void>;
@@ -29,7 +29,6 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [rankingGroup, setRankingGroup] = useState<RankingGroup[]>([]);
   const [rankingData, setRankingData] = useState<KreamProduct[]>([]);
   const [currentProducts, setCurrnetProducts] = useState<KreamProduct[]>([]);
-  const [prevProducts, setPrevProducts] = useState<KreamProduct[]>([]);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -88,13 +87,15 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       setCurrentTime(value);
       const current = rankingGroup.find((data) => data.value === value);
       if (!current) return;
-      if (currentProducts) {
-        setPrevProducts(currentProducts);
-      }
       setCurrnetProducts(current.products);
     },
-    [currentProducts, rankingGroup]
+    [rankingGroup]
   );
+
+  useEffect(() => {
+    if (!rankingGroup || rankingGroup.length === 0) return;
+    setTime(rankingGroup[0].value);
+  }, [rankingGroup, setTime]);
 
   return (
     <RankingContext.Provider
@@ -102,7 +103,6 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
         rankingData,
         rankingGroup,
         currentProducts,
-        prevProducts,
         currentTime,
         isLoading,
         search,

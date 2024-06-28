@@ -46,6 +46,7 @@ const TimeSlider = () => {
       <div className="flex gap-[50px]">
         <div className="w-full">
           <Slider
+            value={currentTime}
             dotStyle={{ display: "none" }}
             min={minMax[0]}
             max={minMax[1]}
