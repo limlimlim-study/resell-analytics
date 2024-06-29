@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "kream-scrapbook",
       script: "node_modules/.bin/next",
-      args: "start",
+      args: "start -p 80",
     },
   ],
 };
