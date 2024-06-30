@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-// import { Nanum_Gothic } from "next/font/google";
+import { Nanum_Gothic } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     "Discover trending products and track their popularity and sales over time with KREAM Scrapbook.",
 };
 
-// const nanum = Nanum_Gothic({
-//   subsets: ["latin"],
-//   weight: ["400", "700", "800"],
-// });
+const nanum = Nanum_Gothic({
+  subsets: ["latin"],
+  weight: ["400", "700", "800"],
+});
 
 export default function RootLayout({
   children,
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="kr">
+    <html lang="kr" className={nanum.className}>
       <body>{children}</body>
     </html>
   );
