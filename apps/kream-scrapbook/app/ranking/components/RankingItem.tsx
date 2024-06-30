@@ -21,7 +21,11 @@ const RankingItem = ({ data }: Props) => {
         window.open(data.url);
       }}
     >
-      <div className="w-[20px] h-[20px] rounded-full absolute bg-slate-100 border-slate-800 text-[10px] text-slate-800 left-[-5px] top-[-5px] flex justify-center items-center font-bold">
+      <div
+        className="w-[20px] h-[20px] rounded-full absolute bg-slate-100 border-slate-800 text-[10px] text-slate-800 left-[-5px] top-[-5px] flex justify-center items-center font-bold"
+        data-tooltip-id="product-tooltip"
+        data-tooltip-content="Hello world!"
+      >
         <div>{data.rank}</div>
       </div>
       <Image

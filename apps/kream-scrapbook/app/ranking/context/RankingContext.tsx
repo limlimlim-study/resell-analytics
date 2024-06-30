@@ -57,7 +57,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       setCurrentDateRange(dateRange);
       setCurrentCategory(category);
 
-      if (diffDays > 3) {
+      if (diffDays >= 3) {
         toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
         setIsLoading(false);
         return;

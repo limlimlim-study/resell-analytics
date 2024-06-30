@@ -48,7 +48,7 @@ export function DatePickerWithRange({ className, onSelectRange }: Props) {
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-[260px] justify-start text-left font-normal text-[12px]",
               !date && "text-muted-foreground"
             )}
           >
@@ -69,6 +69,7 @@ export function DatePickerWithRange({ className, onSelectRange }: Props) {
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
+            className="text-[12px]"
             initialFocus
             mode="range"
             defaultMonth={date?.from}

@@ -9,6 +9,7 @@ import useRanking from "../hooks/useRanking";
 
 import "rc-slider/assets/index.css";
 import { RankingGroup } from "@/types/types";
+import { Card } from "@/components/ui/card";
 
 const TimeSlider = () => {
   const { currentTime, setTime, nextTime, prevTime } = useRanking();
@@ -22,10 +23,11 @@ const TimeSlider = () => {
       const date = new Date(item.key);
       acc[item.value] = {
         style: {
-          marginTop: 5,
+          marginTop: 2,
           transform: "rotate(45deg)",
+          fontSize: 8,
         },
-        label: i % 5 === 0 ? format(date, "HH:mm") : " ",
+        label: i % 4 === 0 ? format(date, "HH:mm") : " ",
       };
       return acc;
     }, {});
@@ -62,56 +64,61 @@ const TimeSlider = () => {
   }, []);
 
   return (
-    <div className="gap-10 h-[100px] mb-[20px] ">
-      <div className="h-[30px] font-bold text-slate-400 text-xl">
-        {currentTime && format(currentTime, "yyyy-MM-dd HH:mm")}
-      </div>
+    <Card className="p-3">
       <div className="flex gap-[50px]">
-        <div className="w-full">
-          <Slider
-            value={currentTime}
-            dotStyle={{ display: "none" }}
-            min={minMax[0]}
-            max={minMax[1]}
-            step={null}
-            marks={sliderMarks}
-            onChange={onChange}
-          />
-        </div>
-        <div className="flex gap-[5px]">
-          <Button
-            size="xs"
-            className="text-[10px]"
-            disabled={rankingGroup.length === 0 || isPlay}
-            onClick={() => {
-              stop();
-              prevTime();
-            }}
-          >
-            이전
-          </Button>
-          <Button
-            size="xs"
-            className="text-[10px]"
-            disabled={rankingGroup.length === 0 || isPlay}
-            onClick={() => {
-              stop();
-              nextTime();
-            }}
-          >
-            다음
-          </Button>
-          <Button
-            size="xs"
-            className="text-[10px]"
-            disabled={rankingGroup.length === 0}
-            onClick={isPlay ? stop : play}
-          >
-            {isPlay ? "정지" : "재생"}
-          </Button>
+        <div className="w-full h-[75px]">
+          <div className="flex">
+            <div className="h-[30px] font-bold text-slate-400 text-xl mb-[10px] w-[190px]">
+              {currentTime ? format(currentTime, "yyyy-MM-dd HH:mm") : "--"}
+            </div>
+            <div className="flex gap-[5px]">
+              <Button
+                size="xs"
+                className="text-[10px]"
+                disabled={rankingGroup.length === 0 || isPlay}
+                onClick={() => {
+                  stop();
+                  prevTime();
+                }}
+              >
+                이전
+              </Button>
+              <Button
+                size="xs"
+                className="text-[10px]"
+                disabled={rankingGroup.length === 0 || isPlay}
+                onClick={() => {
+                  stop();
+                  nextTime();
+                }}
+              >
+                다음
+              </Button>
+              <Button
+                size="xs"
+                className="text-[10px]"
+                disabled={rankingGroup.length === 0}
+                onClick={isPlay ? stop : play}
+              >
+                {isPlay ? "정지" : "재생"}
+              </Button>
+            </div>
+          </div>
+
+          <div className="pl-[5px] pr-[30px]">
+            <Slider
+              value={currentTime}
+              dotStyle={{ display: "none" }}
+              min={minMax[0]}
+              max={minMax[1]}
+              step={null}
+              marks={sliderMarks}
+              onChange={onChange}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import {
   Select,
@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import useSearch from "../hooks/useRanking";
 import { Category } from "@/types/types";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const productCategories = [
   {
@@ -76,10 +77,18 @@ const SearchArea = () => {
 
   const seelctItems = useMemo(() => {
     return productCategories.map((category) => (
-      <SelectItem key={category.code} value={category.code}>
+      <SelectItem
+        key={category.code}
+        value={category.code}
+        className="text-[12px]"
+      >
         {category.name}
       </SelectItem>
     ));
+  }, []);
+
+  const onSelectRange = useCallback((range: DateRange) => {
+    setDateRange(range);
   }, []);
 
   useEffect(() => {
@@ -96,22 +105,19 @@ const SearchArea = () => {
             setCategory(value as Category);
           }}
         >
-          <SelectTrigger className="w-[210px]">
+          <SelectTrigger className="w-[180px] text-[12px]">
             <SelectValue placeholder="카테고리" />
           </SelectTrigger>
           <SelectContent>{seelctItems}</SelectContent>
         </Select>
-        <DatePickerWithRange
-          onSelectRange={(range: DateRange) => {
-            setDateRange(range);
-          }}
-        />
+        <DatePickerWithRange onSelectRange={onSelectRange} />
       </div>
       <Button
         variant="default"
         onClick={onClickSearch}
         disabled={!enableSearch || isLoading}
       >
+        {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
         검색
       </Button>
     </Card>
