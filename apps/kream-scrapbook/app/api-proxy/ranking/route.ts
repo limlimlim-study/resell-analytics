@@ -6,10 +6,10 @@ export async function GET(req: NextRequest) {
   const endTime = req.nextUrl.searchParams.get("endTime");
   try {
     console.log(
-      `http://52.79.245.87/scrap/${category}?startTime=${startTime}&endTime=${endTime}`
+      `http://52.79.245.87/api/scrap/${category}?startTime=${startTime}&endTime=${endTime}`
     );
     const response = await fetch(
-      `http://52.79.245.87/scrap/${category}?startTime=${startTime}&endTime=${endTime}`
+      `http://52.79.245.87/api/scrap/${category}?startTime=${startTime}&endTime=${endTime}`
     );
     const data = await response.json();
     return NextResponse.json(data);
