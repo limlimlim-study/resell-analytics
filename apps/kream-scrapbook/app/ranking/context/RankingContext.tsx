@@ -34,13 +34,24 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentDateRange, setCurrentDateRange] = useState<DateRange>();
 
   const search = async (category: string, dateRange: DateRange) => {
+    if (currentDateRange) {
+      if (
+        currentDateRange.from?.valueOf() === dateRange.from?.valueOf() &&
+        currentDateRange.to?.valueOf() === dateRange.to?.valueOf()
+      ) {
+        return;
+      }
+    }
+
     setIsLoading(true);
     try {
       const from = startOfDay(dateRange.from!);
       const to = endOfDay(dateRange.to!);
       const diffDays = Math.abs(differenceInDays(from, to));
+      setCurrentDateRange(dateRange);
 
       if (diffDays > 3) {
         toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
