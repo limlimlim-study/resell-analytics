@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import useRanking from "../hooks/useRanking";
 
 import "rc-slider/assets/index.css";
+import { RankingGroup } from "@/types/types";
 
 const TimeSlider = () => {
   const { currentTime, setTime, nextTime, prevTime } = useRanking();

@@ -64,7 +64,7 @@ const productCategories = [
 
 const SearchArea = () => {
   const [dateRange, setDateRange] = useState<DateRange>();
-  const [category, setCategory] = useState<string>();
+  const [category, setCategory] = useState<Category>();
   const [enableSearch, setEnableSearch] = useState<boolean>();
   const { search, isLoading } = useSearch();
 
@@ -91,7 +91,11 @@ const SearchArea = () => {
   return (
     <Card className="p-3 flex justify-between">
       <div className="flex gap-3">
-        <Select onValueChange={setCategory}>
+        <Select
+          onValueChange={(value: string) => {
+            setCategory(value as Category);
+          }}
+        >
           <SelectTrigger className="w-[210px]">
             <SelectValue placeholder="카테고리" />
           </SelectTrigger>
