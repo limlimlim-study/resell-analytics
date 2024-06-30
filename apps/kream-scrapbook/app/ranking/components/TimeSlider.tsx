@@ -68,7 +68,7 @@ const TimeSlider = () => {
       <div className="flex gap-[50px]">
         <div className="w-full h-[75px]">
           <div className="flex">
-            <div className="h-[30px] font-bold text-slate-400 text-xl mb-[10px] w-[190px]">
+            <div className="h-[30px] font-bold text-slate-700 text-xl mb-[10px] w-[190px]">
               {currentTime ? format(currentTime, "yyyy-MM-dd HH:mm") : "--"}
             </div>
             <div className="flex gap-[5px]">

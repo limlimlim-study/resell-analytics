@@ -18,9 +18,11 @@ interface RankingContextType {
   rankingData: KreamProduct[];
   rankingGroup: RankingGroup[];
   currentProducts: KreamProduct[];
+  currentCategory: Category;
   currentTime: number;
   isLoading: boolean;
   search: (category: Category, dateRange: DateRange) => Promise<void>;
+  setCurrentCategory: (value: Category) => void;
   setTime: (value: number) => void;
   nextTime: () => void;
   prevTime: () => void;
@@ -35,7 +37,9 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [currentCategory, setCurrentCategory] = useState<Category>();
+  const [currentCategory, setCurrentCategory] = useState<Category>(
+    Category.MAN_SHOES
+  );
   const [currentDateRange, setCurrentDateRange] = useState<DateRange>();
 
   const search = async (category: Category, dateRange: DateRange) => {
@@ -166,9 +170,11 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
         rankingData,
         rankingGroup,
         currentProducts,
+        currentCategory,
         currentTime,
         isLoading,
         search,
+        setCurrentCategory,
         setTime,
         nextTime,
         prevTime,

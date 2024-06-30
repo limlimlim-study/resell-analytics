@@ -14,14 +14,14 @@ const RankingArea = () => {
       {currentProducts.length === 0 ? (
         <div className="flex justify-center pt-[100px]">No Data.</div>
       ) : (
-        <div className="flex flex-wrap gap-[10px] justify-center pb-3">
+        <div className="flex flex-wrap gap-[10px] pb-3">
           {currentProducts
             .filter((item) => item.rank !== -1)
             .map((item) => (
               <div
                 key={item.productId}
                 data-tooltip-id="product-tooltip"
-                data-tooltip-content={item.translatedName}
+                data-tooltip-content={item.translatedName || item.name}
               >
                 <RankingItem data={item} />
               </div>

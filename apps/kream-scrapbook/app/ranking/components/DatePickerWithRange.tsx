@@ -29,7 +29,7 @@ const modifiers = {
 
 export function DatePickerWithRange({ className, onSelectRange }: Props) {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: addDays(new Date(), -1),
+    from: new Date(),
     to: new Date(),
   });
 
