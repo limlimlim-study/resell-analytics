@@ -60,7 +60,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       }
 
       const response = await fetch(
-        `api/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
+        `api-proxy/ranking?category=${category}&startTime=${from.toISOString()}&endTime=${to.toISOString()}`
       );
       const result: KreamProduct[] = await response.json();
       setRankingData(result);
