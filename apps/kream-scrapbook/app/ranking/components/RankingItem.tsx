@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { Ranker } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
 

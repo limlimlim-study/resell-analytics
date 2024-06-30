@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
+import { Ranker } from "@/types/types";
 import useRanking from "../hooks/useRanking";
 import RankingItem from "./RankingItem";
 

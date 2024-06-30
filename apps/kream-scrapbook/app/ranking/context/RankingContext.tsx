@@ -1,5 +1,6 @@
 "use client";
 
+import { Category, KreamProduct, RankingGroup } from "@/types/types";
 import { differenceInDays, endOfDay, startOfDay } from "date-fns";
 import React, {
   createContext,
@@ -19,7 +20,7 @@ interface RankingContextType {
   currentProducts: KreamProduct[];
   currentTime: number;
   isLoading: boolean;
-  search: (category: string, dateRange: DateRange) => Promise<void>;
+  search: (category: Category, dateRange: DateRange) => Promise<void>;
   setTime: (value: number) => void;
   nextTime: () => void;
   prevTime: () => void;
@@ -34,11 +35,13 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentCategory, setCurrentCategory] = useState<Category>();
   const [currentDateRange, setCurrentDateRange] = useState<DateRange>();
 
-  const search = async (category: string, dateRange: DateRange) => {
-    if (currentDateRange) {
+  const search = async (category: Category, dateRange: DateRange) => {
+    if (currentDateRange && currentCategory) {
       if (
+        currentCategory === category &&
         currentDateRange.from?.valueOf() === dateRange.from?.valueOf() &&
         currentDateRange.to?.valueOf() === dateRange.to?.valueOf()
       ) {
@@ -52,6 +55,7 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       const to = endOfDay(dateRange.to!);
       const diffDays = Math.abs(differenceInDays(from, to));
       setCurrentDateRange(dateRange);
+      setCurrentCategory(category);
 
       if (diffDays > 3) {
         toast.warn("조회 기간은 3일을 초과할 수 없습니다.");
