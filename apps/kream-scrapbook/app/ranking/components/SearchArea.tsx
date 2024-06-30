@@ -116,8 +116,8 @@ const SearchArea = () => {
   }, [category]);
 
   return (
-    <Card className="p-3 flex gap-[20px]">
-      <div className="flex gap-3">
+    <Card className="p-3 flex gap-[20px] flex-wrap">
+      <div className="flex flex-wrap gap-3">
         <DatePickerWithRange onSelectRange={onSelectRange} />
         <Select
           value={category}

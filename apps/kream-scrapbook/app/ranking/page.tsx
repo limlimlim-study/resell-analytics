@@ -8,8 +8,8 @@ import TimeSlider from "./components/TimeSlider";
 const RankingPage = () => {
   return (
     <RankingProvider>
-      <div className="flex justify-center h-full min-w-[600px]">
-        <div className="flex flex-col gap-1 px-5 pt-5 pb-5 h-full w-full">
+      <div className="flex justify-center h-full min-w-[431px]">
+        <div className="flex flex-col gap-3 px-5 pt-5 pb-5 h-full w-full">
           <div className="flex gap-3 mb-2">
             <h1 className="font-[700] text-xl">KREAM 스크랩북</h1>
             <h2>
