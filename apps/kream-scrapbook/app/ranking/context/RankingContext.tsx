@@ -117,8 +117,9 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       if (newIndex < rankingGroup.length) {
         setCurrentTime(rankingGroup[newIndex].value);
         setCurrentProducts(rankingGroup[newIndex].products);
+        return newIndex;
       }
-      return newIndex;
+      return prevIndex;
     });
   }, [rankingGroup]);
 
@@ -128,8 +129,9 @@ export const RankingProvider = ({ children }: { children: ReactElement }) => {
       if (newIndex >= 0) {
         setCurrentTime(rankingGroup[newIndex].value);
         setCurrentProducts(rankingGroup[newIndex].products);
+        return newIndex;
       }
-      return newIndex;
+      return prevIndex;
     });
   }, [rankingGroup]);
 
