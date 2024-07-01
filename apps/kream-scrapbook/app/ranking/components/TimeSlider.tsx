@@ -73,6 +73,7 @@ const TimeSlider = () => {
             </div>
             <div className="flex gap-[5px]">
               <Button
+                variant="outline"
                 size="xs"
                 className="text-[10px]"
                 disabled={rankingGroup.length === 0 || isPlay}
@@ -84,6 +85,7 @@ const TimeSlider = () => {
                 이전
               </Button>
               <Button
+                variant="outline"
                 size="xs"
                 className="text-[10px]"
                 disabled={rankingGroup.length === 0 || isPlay}
@@ -95,6 +97,7 @@ const TimeSlider = () => {
                 다음
               </Button>
               <Button
+                variant="outline"
                 size="xs"
                 className="text-[10px]"
                 disabled={rankingGroup.length === 0}

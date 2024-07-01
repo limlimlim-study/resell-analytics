@@ -15,6 +15,7 @@ import { DatePickerWithRange } from "./DatePickerWithRange";
 import useSearch from "../hooks/useRanking";
 import { Category } from "@/types/types";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { Badge } from "@/components/ui/badge";
 
 const productCategories = [
   {
@@ -116,7 +117,10 @@ const SearchArea = () => {
   }, [category]);
 
   return (
-    <Card className="p-3 flex gap-[20px] flex-wrap">
+    <Card className="p-3 flex gap-[30px] flex-wrap">
+      <h1 className="font-[700] text-l content-center">
+        <Badge className="mr-[10px]">TOP 100</Badge>KREAM 스크랩북
+      </h1>
       <div className="flex flex-wrap gap-3">
         <DatePickerWithRange onSelectRange={onSelectRange} />
         <Select
@@ -133,6 +137,8 @@ const SearchArea = () => {
         {/* <div className="text-[10px] leading-10">{categoryDesc}</div> */}
       </div>
       <Button
+        size="sm"
+        className="text-[12px]"
         variant="default"
         onClick={onClickSearch}
         disabled={!enableSearch || isLoading}
