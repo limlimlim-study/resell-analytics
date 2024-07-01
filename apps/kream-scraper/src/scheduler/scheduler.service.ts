@@ -52,13 +52,6 @@ export class SchedulerService implements OnModuleInit {
 
     await this.store.insert(
       await this.scraper.scrap(
-        `https://kream.co.kr/exhibitions/${CategoryCode.WOMEN_SANDALS}`,
-        new ProductParser(new PageEvaluator(), Category.WOMEN_SANDALS, now),
-      ),
-    );
-
-    await this.store.insert(
-      await this.scraper.scrap(
         `https://kream.co.kr/exhibitions/${CategoryCode.WISHS}`,
         new ProductParser(new PageEvaluator(), Category.WISHS, now),
       ),
