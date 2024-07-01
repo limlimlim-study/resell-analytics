@@ -38,16 +38,16 @@ const productCategories = [
     code: Category.WOMEN_CLOTHES,
     decs: "조회, 관심, 거래 급상승",
   },
-  {
-    name: "남성 샌들 인기 순위",
-    code: Category.MAN_SANDALS,
-    decs: "조회, 관심, 거래 급상승",
-  },
-  {
-    name: "여성 샌들 인기 순위",
-    code: Category.WOMEN_SANDALS,
-    decs: "조회, 관심, 거래 급상승",
-  },
+  // {
+  //   name: "남성 샌들 인기 순위",
+  //   code: Category.MAN_SANDALS,
+  //   decs: "조회, 관심, 거래 급상승",
+  // },
+  // {
+  //   name: "여성 샌들 인기 순위",
+  //   code: Category.WOMEN_SANDALS,
+  //   decs: "조회, 관심, 거래 급상승",
+  // },
   {
     name: "관심 상품 순위",
     code: Category.WISHS,
